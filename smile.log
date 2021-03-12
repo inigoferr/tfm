@@ -1,0 +1,20 @@
+[ 12.03.2021 - 11:58:32 ]
+    (MSG) [2] SMILEapi: openSMILE starting!
+[ 12.03.2021 - 11:58:32 ]
+    (MSG) [2] SMILEapi: config file is: C:\Users\UX430UA\OneDrive - UPNA\Documentos\Universidad\Master\TFM\tfm\configFilesOpenSmile\GeMAPSv01b.conf
+[ 12.03.2021 - 11:58:32 ]
+    (MSG) [2] cComponentManager: successfully registered 103 component types.
+[ 12.03.2021 - 11:58:32 ]
+    (MSG) [2] instance 'gemapsv01b_logSpectral': logSpecFloor = -140.00  (specFloor = 1.000000e-14)
+[ 12.03.2021 - 11:58:32 ]
+    (MSG) [2] cComponentManager: successfully finished createInstances (50 component instances were finalised, 1 data memories were finalised)
+[ 12.03.2021 - 11:58:32 ]
+    (MSG) [2] cComponentManager: starting single thread processing loop
+[ 12.03.2021 - 11:59:40 ]
+    (WRN) [2] cComponentManager: The following component(s) could not perform any work because destination levels are full but no other component performed any work either: gemapsv01b_smoE. Processing will possibly be incomplete. For more details, enable the execDebug option of cComponentManager.
+[ 12.03.2021 - 11:59:41 ]
+    (WRN) [2] cComponentManager: The following component(s) could not perform any work because destination levels are full but no other component performed any work either: gemapsv01b_smoE. Processing will possibly be incomplete. For more details, enable the execDebug option of cComponentManager.
+[ 12.03.2021 - 11:59:41 ]
+    (WRN) [2] cComponentManager: The following component(s) could not perform any work because destination levels are full but no other component performed any work either: gemapsv01b_smoE. Processing will possibly be incomplete. For more details, enable the execDebug option of cComponentManager.
+[ 12.03.2021 - 11:59:41 ]
+    (MSG) [2] cComponentManager: Processing finished! System ran for 64868 ticks.
