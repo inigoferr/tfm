@@ -17,3 +17,7 @@
 * manageFiles/
 * opensmileFunctions/
 * util/
+
+## Ejecución 
+
+Actualmente la ejecución se realiza ejecutando el fichero main.py
