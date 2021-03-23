@@ -1,6 +1,7 @@
 import time
 
 import numpy as np
+from opensmile.core.define import FeatureSet
 import pandas as pd
 
 import audiofile
@@ -73,11 +74,10 @@ def analyseF4(corpus, matrix):
     signal, sampling_rate = audiofile.read(file, always_2d=True)
 
     smile = opensmile.Smile(
-        feature_set='configFilesOpenSmile/GeMAPSv01b.conf',
+        feature_set='configFilesOpenSmile/configFile.conf',
         loglevel=2,
         logfile='smile.log',
     )
-    print(smile.feature_names)
 
     print(smile.process_signal(
         signal,
