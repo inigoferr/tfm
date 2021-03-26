@@ -71,22 +71,35 @@ def analyseF4(corpus, matrix):
 
     file = getAUDIOPath(corpus)
 
+    #signal, sampling_rate = audiofile.read('test.wav', always_2d=True)
     signal, sampling_rate = audiofile.read(file, always_2d=True)
 
+    print("Sampling_rate " + str(sampling_rate))
+
     smile = opensmile.Smile(
-        feature_set='configFilesOpenSmile/configFile.conf',
+        feature_set='config/config.conf',
         loglevel=2,
         logfile='smile.log',
     )
 
-    print(smile.process_signal(
+    print("Feature Names = " + str(smile.feature_names))
+
+    df = smile.process_signal(
         signal,
         sampling_rate
-    ))
+    )
+
+    print("Finalizado Signal...")
+
+    df.to_csv('analysisPercentilesDuration.csv', sep='\t')
+
+    print("CSV made...")
 
     with open('./smile.log', 'r') as fp:
         log = fp.readlines()
-    print(log)
+
+    print("THE END!!")
+    # print(log)
 
 
 ######################## F5 #########################################
