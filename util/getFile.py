@@ -1,4 +1,4 @@
-from manageFiles.readFile import readCSV, readTXT
+from util.readFile import readCSV, readTXT
 
 
 def getCLNF_features(XXX):

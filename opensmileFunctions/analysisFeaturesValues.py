@@ -5,7 +5,7 @@ import pandas as pd
 import audiofile
 import opensmile
 
-from manageFiles.getFile import getAUDIOPath, getTRANSCRIPT
+from util.getFile import getAUDIOPath, getTRANSCRIPT
 
 """
     | Feature + Value |
