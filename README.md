@@ -14,7 +14,6 @@
         * full_test_split.csv
         * test_split_Depression_AVEC2017.csv
         * train_split_Depression_AVEC2017.csv
-* manageFiles/
 * opensmileFunctions/
 * util/
 
