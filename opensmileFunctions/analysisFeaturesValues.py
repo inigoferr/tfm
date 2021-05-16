@@ -1,5 +1,3 @@
-import time
-
 import numpy as np
 from opensmile.core.define import FeatureSet
 import pandas as pd
@@ -29,7 +27,7 @@ userCode = 1
 
 # Number of Corpus
 startCorpus = 300
-endCorpus = 306
+endCorpus = 332
 
 # Variables XXX_TRANSCRIPT.csv
 start_time = 0
@@ -43,26 +41,39 @@ posSpeaker = 1
 posNumLines = 2
 posFirstLine = 3
 
+# List with all the answers of the Pyschologist
+answers = []
+
 
 def startAnalysis():
 
     # Analyse the TRANSCRIPT
-    conversations = np.arange(startCorpus, startCorpus + 1)
+    conversations = np.arange(startCorpus, endCorpus + 1)
 
     for corpus in conversations:
-        matrix = getTRANSCRIPT(corpus, '\t')  # \t = 'tab delimiter'
+        if (corpus != 316):
+            matrix = getTRANSCRIPT(corpus, '\t')  # \t = 'tab delimiter'
 
-        # Analyse Pitch region less than 26th percentile pitch level...
-        analyseF4(corpus, matrix)
+            # Analyse Pitch region less than 26th percentile pitch level...
+            #analyseF4(corpus, matrix)
 
-        # After at least 700 millseconds of speech
-        #analyseAfter700MillisecondsOfSpeech(corpus, matrix)
+            # After at least 700 millseconds of speech
+            analyseAfter700MillisecondsOfSpeech(corpus, matrix)
 
-        # After 700 milliseconds of wait (= silence)
-        #analyseAfter700MillisecondsOfWait(corpus, matrix)
+            # After 700 milliseconds of wait (= silence)
+            analyseAfter700MillisecondsOfWait(corpus, matrix)
 
+    # Create File with answers of the Pyschologist
+    arrayAnswers = np.unique(np.array(answers))
+
+    file = open("dictionaryAnswersPyschologist.txt", "w")
+    for word in arrayAnswers:
+        file.write(word + "\n")
+
+    file.close()
 
 ######################## F4 #########################################
+
 
 def analyseF4(corpus, matrix):
     print("----------------------------------------------------------------------")
@@ -150,11 +161,28 @@ def analyseAfter700MillisecondsOfSpeech(corpus, matrix):
 
     # Get rows with duration more than 700 milliseconds
     maskNoZeros = (speech[:, posDuration] > 7.0)
+    speech = speech[maskNoZeros]
 
-    print(speech[maskNoZeros])
+    #print('[durationOfTheSpeech | codeOfTheSpeaker | numLinesInTRANSCRIPT | firstLineInTRANSCRIPT ]')
+    # print(speech[maskNoZeros])
 
-    print("----------------------------------------------------------------------")
-    print("\n")
+    # print("----------------------------------------------------------------------")
+    # print("\n")
+
+    # Print the answer of the Ellie (Psychologist) after 700 milliseconds of speech
+    rows, columns = speech.shape
+    for x in np.arange(0, rows):
+        #printAnswers(speech[x, 2], speech[x, 3], matrix)
+        saveAnswers(speech[x, 2], speech[x, 3], matrix)
+
+
+def printAnswers(firstLine, numLines, transcript):
+    print(transcript[int(firstLine) + int(numLines) + 1, value])
+
+
+def saveAnswers(firstLine, numLines, transcript):
+    answers.append(transcript[int(firstLine) +
+                              int(numLines) + 1, value].strip())
 
 
 def saveSpeechInRow(row, speech, accumulatedDuration, previousSpeaker, numLines, firstLine):
@@ -198,12 +226,12 @@ def analyseAfter700MillisecondsOfWait(corpus, matrix):
     positions700_More = np.array(np.where(mask700_More)) + 1
     rows700OrMore = silences[mask700_More]
 
-    print("Pair of sentences where the silence was 700 milliseconds or more")
-    print("######################################################################")
-    showPairSentencesSilence(
-        matrix, positions700_More, rows700OrMore, corpus)
-    print("######################################################################")
-    print("\n")
+    #print("Pair of sentences where the silence was 700 milliseconds or more")
+    # print("######################################################################")
+    # showPairSentencesSilence(
+    #    matrix, positions700_More, rows700OrMore, corpus)
+    # print("######################################################################")
+    # print("\n")
 
 
 def showPairSentencesSilence(matrix, positions, seconds, corpus):
