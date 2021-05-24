@@ -1,3 +1,4 @@
+import numpy as np
 
 from classes.Rule4 import Rule4
 from classes.Rule2 import Rule2
@@ -26,8 +27,8 @@ endCorpus = 332
 def startAnalysis():
 
     # Analyse the TRANSCRIPT
-    conversations = [300]
-    #conversations = np.arange(startCorpus, endCorpus + 1)
+    #conversations = [300]
+    conversations = np.arange(startCorpus, endCorpus + 1)
 
     for audio in conversations:
         if (audio != 316):  # There is no data for 316_P
