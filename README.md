@@ -2,7 +2,7 @@
 
 ## Estructura ficheros del Corpus
 
-* configFilesOpenSmile/
+* classes/
 * files/
     * corpus/
         * 300_P/
@@ -14,9 +14,14 @@
         * full_test_split.csv
         * test_split_Depression_AVEC2017.csv
         * train_split_Depression_AVEC2017.csv
-* opensmileFunctions/
+    * results/
+        * 300_P/
+        * 301_P/
+        * 302_P/
+        * [...]
+* myconfig/
 * util/
 
 ## Ejecución 
 
-Actualmente la ejecución se realiza ejecutando el fichero main.py
+Execute main.py
