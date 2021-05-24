@@ -1,4 +1,4 @@
-from opensmileFunctions.analysisFeaturesValues import *
+from classes.analysisRules import *
 
 
 def main():

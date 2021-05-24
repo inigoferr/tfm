@@ -5,8 +5,6 @@
 ;writer.levelconf.isRb = 1
 ;writer.levelconf.nT = 5
 
-frameMode = list
-frameList = \cm[frameList(F){0.0s-0.0s}:list with frame end and stop times separated by comma, e.g. 1.0s-1.5s,2.0s-2.5s]
-frameSize = 0
-frameStep = 0
+frameMode = var
 frameCenterSpecial = left
+

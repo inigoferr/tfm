@@ -3,23 +3,20 @@ from util.readFile import readCSV, readTXT
 
 def getCLNF_features(XXX):
     # Function to read XXX_CLNF_features.txt
-    matrix = readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
-                     'features.txt', ',')
-    return matrix
+    return readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
+                   'features.txt', ',')
 
 
 def getCLNF_features3D(XXX):
     # Function to read XXX_CLNF_features3D.txt
-    matrix = readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
-                     'features3D.txt', ',')
-    return matrix
+    return readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
+                   'features3D.txt', ',')
 
 
 def getCLNF_gaze(XXX):
     # Function to read XXX_CLNF_gaze.txt
-    matrix = readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
-                     'gaze.txt', ',')
-    return matrix
+    return readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
+                   'gaze.txt', ',')
 
 
 def getCLNF_hog(XXX):
@@ -31,37 +28,32 @@ def getCLNF_hog(XXX):
 
 def getCLNF_pose(XXX):
     # Function to read XXX_CLNF_pose.txt
-    matrix = readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
-                     'pose.txt', ',')
-    return matrix
+    return readTXT(getCorpusPath(XXX) + getCLNFPath(XXX) +
+                   'pose.txt', ',')
 
 
 def getCLNF_AUs(XXX):
     # Function to read XXX_CLNF_AUs.csv
-    matrix = readCSV(getCorpusPath(XXX) + getCLNFPath(XXX) +
-                     'AUs.csv', ',')
-    return matrix
+    return readCSV(getCorpusPath(XXX) + getCLNFPath(XXX) +
+                   'AUs.csv', ',')
 
 
 def readCOVAREP(XXX, delimiter):
     # Function to read XXX_COVAREP.csv
-    matrix = readCSV(getCorpusPath(XXX) +
-                     getInsidePath(XXX) + 'COVAREP.csv', delimiter)
-    return matrix
+    return readCSV(getCorpusPath(XXX) +
+                   getInsidePath(XXX) + 'COVAREP.csv', delimiter)
 
 
 def getFORMANT(XXX, delimiter):
     # Function to read XXX_FORMANT.csv
-    matrix = readCSV(getCorpusPath(XXX) +
-                     getInsidePath(XXX) + 'FORMANT.csv', delimiter)
-    return matrix
+    return readCSV(getCorpusPath(XXX) +
+                   getInsidePath(XXX) + 'FORMANT.csv', delimiter)
 
 
 def getTRANSCRIPT(XXX, delimiter):
     # Function to read XXX_TRANSCRIPT.csv
-    matrix = readCSV(getCorpusPath(XXX) +
-                     getInsidePath(XXX) + 'TRANSCRIPT.csv', delimiter)
-    return matrix
+    return readCSV(getCorpusPath(XXX) +
+                   getInsidePath(XXX) + 'TRANSCRIPT.csv', delimiter)
 
 
 def getAUDIOPath(XXX):

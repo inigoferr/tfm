@@ -2,16 +2,20 @@
 ///////// > openSMILE configuration file for wave input <            //////////////////
 /////////                                                            //////////////////
 ///////// (c) audEERING GmbH,                                        //////////////////
-/////////     All rights reserverd.                                  //////////////////
+/////////     All rights reserved.                                  //////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 
-[componentInstances:cComponentManager]
-instance[extsource].type=cExternalAudioSource
 
-[extsource:cExternalAudioSource]
+
+[componentInstances:cComponentManager]
+instance[waveIn].type=cWaveSource
+
+[waveIn:cWaveSource]
 writer.dmLevel=wave
-writer.levelconf.growDyn=1
-writer.levelconf.isRb=0
-sampleRate=\cm[sampleRate{16000}:sample rate]
-nBits=\cm[nBits{16}:sample bits]
-channels=\cm[channels{1}:channel size]
+buffersize_sec = 5.0
+filename= \cm[inputfile(I){test.wav}:name of input file]
+start=\cm[start{0}:audio start position in seconds]
+end=\cm[end{-1}:audio end position in seconds, -1 for end of file]
+monoMixdown=1
+outFieldName = pcm
+

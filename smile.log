@@ -1,24 +1,12 @@
-[ 08.04.2021 - 20:37:30 ]
-    (MSG) [2] SMILEapi: openSMILE starting!
-[ 08.04.2021 - 20:37:30 ]
-    (MSG) [2] SMILEapi: config file is: C:\Users\UX430UA\OneDrive - UPNA\Documentos\Universidad\Master\TFM\tfm\config\config.conf
-[ 08.04.2021 - 20:37:30 ]
+[ 24.05.2021 - 15:30:01 ]
+    (MSG) [2] SMILExtract: openSMILE starting!
+[ 24.05.2021 - 15:30:01 ]
+    (MSG) [2] SMILExtract: config file is: myconfig/prosody/prosodyShs.conf
+[ 24.05.2021 - 15:30:01 ]
     (MSG) [2] cComponentManager: successfully registered 103 component types.
-[ 08.04.2021 - 20:37:30 ]
-    (ERR) [0] commandlineParser: parse: unknown option '-bufferModeRbConf' on commandline!
-[ 08.04.2021 - 20:37:30 ]
-    (ERR) [0] commandlineParser: parse: unknown option '-frameModeFunctionalsConf' on commandline!
-[ 08.04.2021 - 20:37:30 ]
-    (ERR) [1] instance 'pitchComponent': no input field 'F0' found, this is required! Use a pitch component as input and check the name, see the 'F0fieldname' option.
-[ 08.04.2021 - 20:37:30 ]
-    (ERR) [1] instance 'pitchComponent': no input field 'F0env' found, this is required! Use a pitch component as input and check the name, see the 'F0envFieldname' option.
-[ 08.04.2021 - 20:37:30 ]
-    (ERR) [1] instance 'pitchComponent': no input field 'RMSenergy' or 'loudness' found, one of these is required! Use an energy or intensity component as second input.
-[ 08.04.2021 - 20:37:30 ]
-    (WRN) [2] instance 'funcconcat.reader': Inconsistency in input level parameters. growDyn on first (#1) input = 1, growDyn on input # 2 (pitchComponent) = 0. This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 08.04.2021 - 20:37:30 ]
-    (WRN) [2] instance 'funcconcat.reader': Inconsistency in input level parameters. isRb on first (#1) input = 0, isRb on input # 2 (pitchComponent) = 1. This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 08.04.2021 - 20:37:30 ]
-    (WRN) [1] instance 'funcconcat.reader': Input level buffer sizes (levelconf.nT) are inconsistent. Level 'frames' has size 2 which is smaller than the max. input size of all input levels (150). This might cause the processing to hang unpredictably or cause incomplete processing.
-[ 08.04.2021 - 20:37:30 ]
-    (MSG) [2] cComponentManager: successfully finished createInstances (5 component instances were finalised, 1 data memories were finalised)
+[ 24.05.2021 - 15:30:01 ]
+    (MSG) [2] cComponentManager: successfully finished createInstances (11 component instances were finalised, 1 data memories were finalised)
+[ 24.05.2021 - 15:30:02 ]
+    (MSG) [2] cComponentManager: starting single thread processing loop
+[ 24.05.2021 - 15:30:06 ]
+    (MSG) [2] cComponentManager: Processing finished! System ran for 654 ticks.
