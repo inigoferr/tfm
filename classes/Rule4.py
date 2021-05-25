@@ -3,7 +3,7 @@ import csv
 
 from classes.Rule import Rule
 from util.readFile import readCSV
-from util.codes import silenceCode, therapistCode
+from util.codes import silenceCode, therapist, therapistCode, user, userCode
 
 # A region of pitch less than the 26th-percentile pitch level and continuing for at least 110 milliseconds --> Back-channel
 
@@ -14,16 +14,17 @@ class Rule4(Rule):
         # It needs the file XXX_pitch.csv generated in Rule 1
         path = './files/results/' + \
             str(self.audio) + '_P/rule1/' + str(self.audio) + "_pitch.csv"
-        file = readCSV(path, ",")
+        self.__file = readCSV(path, ",")
 
-        self.__pitch = file[:, 1]
-        self.__pitch = self.__pitch.astype(np.float)
+        ab = self.__file[:, [0, 1]].astype(np.float)
+        c = self.__file[:, 2].astype(np.int).reshape(-1, 1)
+        self.__newfile = np.concatenate((ab, c), axis=1)
 
-        self.__frameTime = file[:, 0]
-        self.__frameTime = self.__frameTime.astype(np.float)
+        self.__frameTime = self.__newfile[:, 0]
 
-        self.__speaker = file[:, 2]
-        self.__speaker = self.__speaker.astype(np.int)
+        self.__pitch = self.__newfile[:, 1]
+
+        self.__speaker = self.__newfile[:, 2]
 
         # Compute the Xth-percentile pitch level
         self.__percentile = 26
@@ -34,14 +35,17 @@ class Rule4(Rule):
 
     def __computePercentilePitchLevel(self):
 
-        totalUniqueValues = np.unique(self.__pitch)
+        # Get the values of speaker = userCode
+        values = self.__newfile[np.where(self.__newfile[:, 2] == userCode)]
+
+        totalUniqueValues = np.unique(values)
         totalUniqueValuesSorted = np.sort(totalUniqueValues)
 
         position = (
             totalUniqueValuesSorted.shape[0] * self.__percentile) / 100.0
 
         result = totalUniqueValuesSorted[int(position)]
-        # print("The " + str(percentile) + "th-percentile pitch level is " +
+        # print("The " + str(self.__percentile) + "th-percentile pitch level is " +
         #      str(result))
 
         return result
@@ -60,6 +64,7 @@ class Rule4(Rule):
         stop_time = self.transcript[:, 1]
         stop_time = stop_time.astype(np.float)
 
+        self.__speakerTranscript = self.transcript[:, 2]
         values = self.transcript[:, 3]
 
         path = './files/results/' + \
@@ -70,7 +75,7 @@ class Rule4(Rule):
             self.__writer = csv.writer(file)
 
             self.__writer.writerow(
-                ["recommended_time", "next_start_time", "next_sentence"])
+                ["recommended_time", "start_time", "answer"])
 
             self.__totalTime = 0.0
             self.__lastDifferentSpeaker = silenceCode
@@ -81,33 +86,31 @@ class Rule4(Rule):
                 if(self.__frameTime[self.__currentRowPitch] > startConversation):
                     break
 
-            oldB = 0.0
-            for pos in np.arange(rowsTranscript):
+            for pos in np.arange(0, rowsTranscript - 1):
                 self.__a = start_time[pos]
                 self.__b = stop_time[pos]
 
-                self.__sentence = values[pos]
+                # Jump the silences and the sentences of the therapist
+                while(self.__currentRowPitch < rowsPitch and self.__speaker[self.__currentRowPitch] in (silenceCode, therapistCode)):
+                    self.__currentRowPitch += 1
 
-                # Silence moment
-                if (self.__currentRowPitch < rowsPitch and oldB < self.__frameTime[self.__currentRowPitch] < self.__a):
+                # Only when the user is talking
+                while ((self.__currentRowPitch < rowsPitch)
+                       and self.__speaker[self.__currentRowPitch] == userCode
+                       and (self.__a <= self.__frameTime[self.__currentRowPitch] <= self.__b)):
+
+                    self.__sentence = values[pos + 1]
+                    # Get nextSpeaker
+                    self.__nextSpeaker = self.__speakerTranscript[pos + 1]
+                    if (self.__nextSpeaker == therapist):
+                        self.__nextSpeaker = therapistCode
+                    else:
+                        self.__nextSpeaker = userCode
 
                     self.__checkWriteRowPitch()
 
-                    while(oldB < self.__frameTime[self.__currentRowPitch] < self.__a):
-                        self.__checkWriteRowPitch()
-
-                while (self.__currentRowPitch < rowsPitch and self.__a <= self.__frameTime[self.__currentRowPitch] <= self.__b):
-                    if ((pos + 1) < rowsTranscript):
-                        self.__a = start_time[pos + 1]
-                        self.__sentence = values[pos + 1]
-
-                        self.__checkWriteRowPitch()
-                    else:
-                        self.__currentRowPitch += 1
-
-                oldB = self.__b
-
     def __checkWriteRowPitch(self):
+
         self.__actualSpeaker = self.__speaker[self.__currentRowPitch]
 
         if(self.__oldSpeaker != self.__actualSpeaker):
@@ -117,9 +120,15 @@ class Rule4(Rule):
         # and the last element and the actual element being checked have the same speaker
         # and the speaker is NOT the therapist
         # and the last different speaker was NOT the therapist
-        if ((self.__pitch[self.__currentRowPitch] < self.__x) and (self.__oldSpeaker == self.__actualSpeaker) and (self.__actualSpeaker != therapistCode) and (self.__lastDifferentSpeaker != therapistCode)):
+        if (self.__nextSpeaker != self.__actualSpeaker
+            and (self.__pitch[self.__currentRowPitch] < self.__x)
+            and (self.__oldSpeaker == self.__actualSpeaker)
+            and (self.__actualSpeaker != therapistCode)
+                and (self.__lastDifferentSpeaker != therapistCode)):
+
             self.__totalTime += self.__frameTime[self.__currentRowPitch]
 
+            # print("...")
             if (self.__totalTime >= self.__minTime):
                 self.__writer.writerow(
                     [self.__frameTime[self.__currentRowPitch], self.__a, self.__sentence])
