@@ -44,4 +44,3 @@ class Rule7(Rule):
                 writer.writerow(["None", "None"])
 
         print("Rule 7 finished...")
-        return empty

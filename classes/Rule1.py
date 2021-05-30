@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from classes.Rule import Rule
 from util.readFile import readCSV
-from util.codes import silenceCode, therapist, therapistCode, userCode
+from util.codes import silenceCode, therapist, therapistCode, user, userCode
 
 # Lowering of pitch in speech signal --> Back-channel
 
@@ -13,14 +13,31 @@ from util.codes import silenceCode, therapist, therapistCode, userCode
 class Rule1(Rule):
 
     def analyseRule(self):
+        self.__start_time = self.transcript[:, 0]
+        self.__start_time = self.__start_time.astype(np.float)
+
+        self.__stop_time = self.transcript[:, 1]
+        self.__stop_time = self.__stop_time.astype(np.float)
+
+        self.__speakers = self.transcript[:, 2]
+
+        self.__speakers[self.__speakers == therapist] = therapistCode
+        self.__speakers[self.__speakers == user] = userCode
+        self.__speakers = self.__speakers.astype(np.int)
+
         # Generate XXX_ProsodyACF.csv
         self.__generatePROSODYACF()
 
         # Generate XXX_pitch.csv
         self.__generatePitch()
 
+        # Generate XXX_dictionaryAnswersPyschologist.csv
+        self.__generateAnswersPyschologist()
+
         # Generate Graph
         self.__generateGraphPitch()
+
+        print("Rule 1 finished...")
 
     def __generatePROSODYACF(self):
         command = "SMILExtract -C myconfig/prosody/prosodyAcf.conf -I ./files/corpus/##ID##_P/##ID##_AUDIO.wav -csvoutput ./files/results/##ID##_P/rule1/##OUTPUTCSV##"
@@ -43,14 +60,6 @@ class Rule1(Rule):
         loudness = prosodyPitch[:, 4]
         loudness = loudness.astype(np.float)
 
-        start_time = self.transcript[:, 0]
-        start_time = start_time.astype(np.float)
-
-        stop_time = self.transcript[:, 1]
-        stop_time = stop_time.astype(np.float)
-
-        speakers = self.transcript[:, 2]
-
         path = './files/results/' + \
             str(self.audio) + '_P/rule1/' + str(self.audio) + '_pitch.csv'
 
@@ -63,11 +72,11 @@ class Rule1(Rule):
             currentSpeaker = 0
 
             rowsProsody = frameTime.shape[0]
-            rowsTranscript = start_time.shape[0]
+            rowsTranscript = self.__start_time.shape[0]
 
-            # Write the rows before start_time[0]
+            # Write the rows before self.__start_time[0]
             for currentRowProsody in np.arange(rowsProsody):
-                if (frameTime[currentRowProsody] > start_time[0]):
+                if (frameTime[currentRowProsody] > self.__start_time[0]):
                     break
 
                 writer.writerow([frameTime[currentRowProsody],
@@ -75,8 +84,8 @@ class Rule1(Rule):
 
             oldB = 0.0
             for pos in np.arange(rowsTranscript):
-                a = start_time[pos]
-                b = stop_time[pos]
+                a = self.__start_time[pos]
+                b = self.__stop_time[pos]
 
                 # Silence moment
                 if(oldB < frameTime[currentRowProsody] < a):
@@ -92,11 +101,7 @@ class Rule1(Rule):
                             [frameTime[currentRowProsody], loudness[currentRowProsody], currentSpeaker])
                         currentRowProsody += 1
 
-                # Detect currentSpeaker
-                if (speakers[pos] == therapist):
-                    currentSpeaker = therapistCode
-                else:
-                    currentSpeaker = userCode
+                currentSpeaker = self.__speakers[pos]
 
                 while (a <= frameTime[currentRowProsody] <= b):
 
@@ -105,6 +110,74 @@ class Rule1(Rule):
                     currentRowProsody += 1
 
                 oldB = b
+
+    def __generateAnswersPyschologist(self):
+        path = './files/results/' + \
+            str(self.audio) + '_P/rule1/' + str(self.audio) + '_pitch.csv'
+
+        file = readCSV(path, ",")
+
+        rowsPitch = file.shape[0]
+        rowsTranscript = self.transcript.shape[0]
+        startConversation = self.transcript[0, 0].astype(np.float)
+
+        values = self.transcript[:, 3]
+
+        frameTime = file[:, 0].astype(np.float)
+        pitch = file[:, 1].astype(np.float)
+        speakerPitch = file[:, 2].astype(np.int)
+
+        diff = frameTime[1] - frameTime[0]
+
+        range = diff * 5
+
+        pathDictionary = './files/results/' + \
+            str(self.audio) + '_P/rule1/dictionaryAnswers.csv'
+
+        with open(pathDictionary, 'w', newline='') as fileDictionary:
+            writer = csv.writer(fileDictionary)
+            writer.writerow(["totalTime", "recommended_time",
+                             "start_time", "speaker", "answer"])
+
+            totalTime = 0.0
+
+            # Avoid checking the time before the first sentence
+            for currentRowPitch in np.arange(rowsPitch):
+                if(frameTime[currentRowPitch] > startConversation):
+                    break
+
+            previousPitch = 0.0
+            for pos in np.arange(0, rowsTranscript - 1):
+                a = self.__start_time[pos]
+                b = self.__stop_time[pos]
+
+                # Jump the silences and the sentences of the therapist
+                while(currentRowPitch < rowsPitch and speakerPitch[currentRowPitch] in (silenceCode, therapistCode)):
+                    currentRowPitch += 1
+
+                # Only when the user is talking
+                while ((currentRowPitch < rowsPitch)
+                       and speakerPitch[currentRowPitch] == userCode
+                       and (a <= frameTime[currentRowPitch] <= b)):
+
+                    actualPitch = pitch[currentRowPitch]
+
+                    if (previousPitch >= actualPitch):
+                        totalTime += diff
+                    else:
+                        totalTime = 0.0
+
+                    # Get the next 'a' time
+                    nextA = self.__start_time[pos + 1]
+
+                    if (totalTime >= range):
+                        writer.writerow(
+                            [totalTime, frameTime[currentRowPitch], nextA, self.__speakers[pos + 1], values[pos + 1]])
+
+                    currentRowPitch += 1
+                    previousPitch = actualPitch
+
+                totalTime = 0.0
 
     def __generateGraphPitch(self):
         path = './files/results/' + \

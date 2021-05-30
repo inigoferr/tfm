@@ -33,7 +33,7 @@ class Rule6(Rule):
         # print("Average Silence = " + str(averageSilence))
 
         # Rows where silence was 700 milliseconds or more
-        mask = silences >= 7.0
+        mask = silences >= 0.7
         self.__positions = np.array(np.where(mask)) + 1
         self.__rows = silences[mask]
 
@@ -51,7 +51,7 @@ class Rule6(Rule):
         with open(path, 'w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(
-                ["seconds", "line1", "speaker1", "answer1", "line2", "speaker2", "answer2"])
+                ["seconds", "line1", "speaker1", "answer1", "start_time", "line2", "speaker2", "answer2"])
 
             for z in self.__positions:
                 for x in z:
@@ -60,23 +60,9 @@ class Rule6(Rule):
                             str(x+1),
                             self.transcript[x - 1, speaker],
                             self.transcript[x - 1, value],
+                            self.transcript[x, start_time],
                             str(x+2),
                             self.transcript[x, speaker],
-                            self.transcript[x, value]
+                            self.transcript[x, value].strip()
                          ])
                     i += 1
-
-
-"""
-def showPairSentencesSilence(matrix, positions, seconds, corpus):
-    i = 0
-    for z in positions:
-        for x in z:
-            print(matrix[x - 1, speaker] + ': ' + matrix[x - 1, value])
-            print(matrix[x, speaker] + ': ' + matrix[x, value])
-            print("Seconds: " + str(np.around(seconds[i], 2)) + " seconds")
-            print("Lines of " + str(corpus) +
-                  "_TRANSCRIPT.csv: " + str(x+1) + " & " + str(x+2))
-            print("-----------------------------------------------------")
-            i += 1
-"""

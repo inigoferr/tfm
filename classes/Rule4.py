@@ -33,6 +33,8 @@ class Rule4(Rule):
         # Generate XXX_region26Pitch.csv
         self.__generateRegionPercentilePitch()
 
+        print("Rule 4 finished...")
+
     def __computePercentilePitchLevel(self):
 
         # Get the values of speaker = userCode
@@ -107,6 +109,9 @@ class Rule4(Rule):
                     else:
                         self.__nextSpeaker = userCode
 
+                    # Get the next 'a' time
+                    self.__nextA = start_time[pos + 1]
+
                     self.__checkWriteRowPitch()
 
     def __checkWriteRowPitch(self):
@@ -131,7 +136,7 @@ class Rule4(Rule):
             # print("...")
             if (self.__totalTime >= self.__minTime):
                 self.__writer.writerow(
-                    [self.__frameTime[self.__currentRowPitch], self.__a, self.__sentence])
+                    [self.__frameTime[self.__currentRowPitch], self.__nextA, self.__sentence])
         else:
             self.__totalTime = 0.0
 

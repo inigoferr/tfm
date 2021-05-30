@@ -1,12 +1,12 @@
-[ 24.05.2021 - 20:26:42 ]
+[ 30.05.2021 - 20:31:04 ]
     (MSG) [2] SMILExtract: openSMILE starting!
-[ 24.05.2021 - 20:26:42 ]
+[ 30.05.2021 - 20:31:04 ]
     (MSG) [2] SMILExtract: config file is: myconfig/prosody/prosodyShs.conf
-[ 24.05.2021 - 20:26:42 ]
+[ 30.05.2021 - 20:31:04 ]
     (MSG) [2] cComponentManager: successfully registered 103 component types.
-[ 24.05.2021 - 20:26:42 ]
+[ 30.05.2021 - 20:31:04 ]
     (MSG) [2] cComponentManager: successfully finished createInstances (11 component instances were finalised, 1 data memories were finalised)
-[ 24.05.2021 - 20:26:42 ]
+[ 30.05.2021 - 20:31:04 ]
     (MSG) [2] cComponentManager: starting single thread processing loop
-[ 24.05.2021 - 20:26:49 ]
-    (MSG) [2] cComponentManager: Processing finished! System ran for 880 ticks.
+[ 30.05.2021 - 20:31:10 ]
+    (MSG) [2] cComponentManager: Processing finished! System ran for 25945 ticks.
