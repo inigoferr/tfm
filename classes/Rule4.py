@@ -67,6 +67,11 @@ class Rule4(Rule):
         stop_time = stop_time.astype(np.float)
 
         self.__speakerTranscript = self.transcript[:, 2]
+        self.__speakerTranscript[self.__speakerTranscript ==
+                                 therapist] = therapistCode
+        self.__speakerTranscript[self.__speakerTranscript == user] = userCode
+        self.__speakerTranscript = self.__speakerTranscript.astype(np.int)
+
         values = self.transcript[:, 3]
 
         path = './files/results/' + \
@@ -104,10 +109,11 @@ class Rule4(Rule):
                     self.__sentence = values[pos + 1]
                     # Get nextSpeaker
                     self.__nextSpeaker = self.__speakerTranscript[pos + 1]
-                    if (self.__nextSpeaker == therapist):
-                        self.__nextSpeaker = therapistCode
-                    else:
-                        self.__nextSpeaker = userCode
+                    #self.__nextSpeaker = self.__speakerTranscript[pos + 1]
+                    # if (self.__nextSpeaker == therapist):
+                    #    self.__nextSpeaker = therapistCode
+                    # else:
+                    #    self.__nextSpeaker = userCode
 
                     # Get the next 'a' time
                     self.__nextA = start_time[pos + 1]
@@ -133,7 +139,6 @@ class Rule4(Rule):
 
             self.__totalTime += self.__frameTime[self.__currentRowPitch]
 
-            # print("...")
             if (self.__totalTime >= self.__minTime):
                 self.__writer.writerow(
                     [self.__frameTime[self.__currentRowPitch], self.__nextA, self.__sentence])

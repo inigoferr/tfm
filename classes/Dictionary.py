@@ -19,6 +19,7 @@ class Dictionary:
         self.__getAnswersRule1And2()
 
         # Obtain answers from Rule 3
+        self.__getAnswersRule3()
 
         # Obtain answers from Rule 4
         self.__getAnswersRule4()
@@ -60,6 +61,29 @@ class Dictionary:
                 newResults = np.unique(newResults, axis=0)[:, [0, 2]]
 
                 [self.__dictionary.append(x) for x in newResults]
+
+    def __getAnswersRule3(self):
+        path = './files/results/' + \
+            str(self.audio) + '_P/rule3/dictionaryAnswers.csv'
+
+        file = readCSV(path, ",")
+
+        if (file.shape[0] > 0):
+
+            f1 = file[file[:, 2] == ""]
+            st1 = f1[:, 0].reshape(-1, 1)
+            a1 = f1[:, 1].reshape(-1, 1)
+            r1 = np.hstack((st1, a1))
+
+            f2 = file[file[:, 2] != ""]
+            st2 = f2[:, 0].reshape(-1, 1)
+            a2 = f2[:, 2].reshape(-1, 1)
+            r2 = np.hstack((st2, a2))
+
+            results = np.vstack((r1, r2))
+            results = np.unique(results, axis=0)
+
+            [self.__dictionary.append(x) for x in results]
 
     def __getAnswersRule4(self):
 

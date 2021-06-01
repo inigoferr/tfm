@@ -27,13 +27,16 @@ class Rule3(Rule):
 
         self.__values = self.transcript[:, 3]
 
-        self.__computeNumberSyllables()
+        # self.__computeNumberSyllables()
 
         # Generate XXX_syllableDuration.csv
-        self.__generateFluencyParameters()
+        # self.__generateFluencyParameters()
 
         # Generate XXX_fluencyParameters.csv
-        self.__computeFormulas()
+        # self.__computeFormulas()
+
+        # Detect disfluencies in the transcript
+        self.__detectDisfluenciesTranscript()
 
         print("Rule 3 finished...")
 
@@ -126,3 +129,57 @@ class Rule3(Rule):
 
                 writer.writerow(
                     [speaker[x], averageSyllableDuration, articulationRate, speechRate])
+
+    def __detectDisfluenciesTranscript(self):
+
+        self.__rowsTranscript = self.transcript.shape[0]
+
+        hesitationRepetitionWords = ("um", "eh", "eh,", "uh")
+
+        reservedWords = ("<cough>", "<laughter>", "<sigh>")
+
+        pathDictionary = './files/results/' + \
+            str(self.audio) + '_P/rule3/dictionaryAnswers.csv'
+
+        with open(pathDictionary, 'w', newline='') as fileDictionary:
+            self.__writer = csv.writer(fileDictionary)
+            self.__writer.writerow(["start_time", "answer1", "answer2"])
+
+            for pos, elem in enumerate(self.__values[:(self.__rowsTranscript-1)]):
+                # Person mispeaks --> Not analysed
+
+                # Repetitions and hesitations
+                # Speech is cut-off
+                # Unrecognizable words
+                if (self.__speaker[pos] == userCode):
+                    self.__y = pos
+
+                    if (self.__areHesitationWords()
+                        or any(x in elem.split() for x in hesitationRepetitionWords)
+                        or all(x not in elem for x in reservedWords) and "<" in elem and ">" in elem
+                            or ("xxx" in elem)):
+
+                        self.__getNextPyschologistAnswer()
+
+    def __getNextPyschologistAnswer(self):
+
+        for x in np.arange(self.__y, self.__rowsTranscript):
+            if (self.__speaker[x] == therapistCode):
+
+                if (x + 1 < self.__rowsTranscript and self.__speaker[x + 1] == therapistCode):
+                    self.__writer.writerow(
+                        [self.__start_time[x], self.__values[x].strip(), self.__values[x + 1].strip()])
+                else:
+                    self.__writer.writerow(
+                        [self.__start_time[x], self.__values[x].strip(), ""])
+                break
+
+    def __areHesitationWords(self):
+
+        s = self.__values[self.__y].split()
+
+        for pos in np.arange(0, len(s) - 1):
+            if (s[pos] == s[pos + 1]):
+                return True
+
+        return False

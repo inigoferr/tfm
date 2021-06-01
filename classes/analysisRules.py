@@ -32,8 +32,8 @@ endCorpus = 332
 def startAnalysis():
 
     # Analyse the TRANSCRIPT
-    conversations = [300]
-    #conversations = np.arange(startCorpus, endCorpus + 1)
+    #conversations = [300]
+    conversations = np.arange(startCorpus, endCorpus + 1)
 
     for audio in conversations:
         if (audio != 316):  # There is no data for 316_P
@@ -51,23 +51,23 @@ def startAnalysis():
 
             # Analyse Rule 4
             r4 = Rule4(audio, transcript)
-            # r4.analyseRule()
+            r4.analyseRule()
 
             # After at least 700 millseconds of speech
             r5 = Rule5(audio, transcript)
-            # r5.analyseRule()
+            r5.analyseRule()
 
             # After 700 milliseconds of wait (= silence)
             r6 = Rule6(audio, transcript)
-            # r6.analyseRule()
+            r6.analyseRule()
 
             # Analyse Rule 7
             r7 = Rule7(audio, transcript)
-            # r7.analyseRule()
+            r7.analyseRule()
 
             # Analyse Rule 3
             r3 = Rule3(audio, transcript)
-            # r3.analyseRule()
+            r3.analyseRule()
 
             dictionary = Dictionary(audio)
             dictionary.generateDictionary()
