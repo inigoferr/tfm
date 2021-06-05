@@ -3,7 +3,7 @@ import os
 import csv
 import matplotlib.pyplot as plt
 
-from classes.Rule import Rule
+from classes.rules.Rule import Rule
 from util.readFile import readCSV
 from util.codes import silenceCode, therapist, therapistCode, participant, participantCode
 

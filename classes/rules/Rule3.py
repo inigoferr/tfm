@@ -1,7 +1,7 @@
 import numpy as np
 import csv
 
-from classes.Rule import Rule
+from classes.rules.Rule import Rule
 from util.sylco import sylco
 from util.readFile import readCSV
 from util.codes import therapist, therapistCode, participant, participantCode, hesitationRepetitionWords, reservedWords

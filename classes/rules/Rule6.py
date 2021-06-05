@@ -1,7 +1,7 @@
 import numpy as np
 import csv
 
-from classes.Rule import Rule
+from classes.rules.Rule import Rule
 from util.codes import start_time, stop_time, speaker, value
 
 # After 700 milliseconds wait --> Back-channel

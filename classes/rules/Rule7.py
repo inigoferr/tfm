@@ -1,7 +1,7 @@
 import numpy as np
 import csv
 
-from classes.Rule import Rule
+from classes.rules.Rule import Rule
 from util.readFile import readCSV
 """
 Not output back-channel feedback within the preceding 800 milliseconds --> Back-channel

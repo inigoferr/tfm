@@ -1,7 +1,7 @@
 import numpy as np
 import csv
 
-from classes.Rule import Rule
+from classes.rules.Rule import Rule
 from util.codes import therapist, therapistCode, participant, participantCode
 
 # After at least 700 milliseconds of speech --> Back-channel

@@ -1,4 +1,5 @@
 import numpy as np
+import csv
 
 from util.readFile import readCSV
 from util.codes import lNoAct, lBackChannel, lQuestion
@@ -39,14 +40,17 @@ class CheckPrediction:
         labelSolution = solution[:, 1].astype(np.float)
 
         # Get Total Backchannel
-        self.__total = labelSolution[labelSolution == lBackChannel].shape[0]
+        self.total = labelSolution[labelSolution == lBackChannel].shape[0]
 
         # Start Checking Prediction
+
+        # Get True Positives (TP), False Positives (FP) and True Negatives (TN)
         for pos, label in enumerate(labelPredict):
 
             if label == lBackChannel:
                 # Check lBackChannel
 
+                # Get the range where checking
                 a = fTPrediction[pos] <= fTSolution
                 b = fTSolution <= (fTPrediction[pos] + self.range)
 
@@ -62,6 +66,8 @@ class CheckPrediction:
 
             elif label == lNoAct:
                 # Check lNoAct
+
+                # Get the range where checking
                 a = fTPrediction[pos] <= fTSolution
                 b = fTSolution <= (fTPrediction[pos] + self.range)
 
@@ -69,8 +75,8 @@ class CheckPrediction:
 
                 if all([i != lBackChannel for i in interval]):
                     self.TN += 1
-                
 
+        # Get False Negatives (FN)
         for pos, label in enumerate(labelSolution):
 
             if label == lBackChannel:
@@ -87,31 +93,52 @@ class CheckPrediction:
             elif label == lQuestion:
                 continue
 
-        print("Total = " + str(self.__total))
-        print("TP = " + str(self.TP))
-        print("FP = " + str(self.FP))
-        print("TN = " + str(self.TN))
-        print("FN = " + str(self.FN))
+        # Compute Actuals and Predicted
+        self.__computeActualsPredicted()
 
-    def __computeAccuracy(self):
-        self.__accuracy = (self.TP + self.TN) / self.__total
+        # Save values into confusionMatrix.csv
+        self.__saveValues()
 
-    def __computeMisclassificationRate(self):
-        self.__misClasRate = (self.FP + self.FN) / self.__total
+    def __computeActualsPredicted(self):
+        self.actualYes = self.TN + self.FP
+        self.actualNo = self.FN + self.TP
 
-    def __computeTP_rate(self):
-        self.__TPrate = self.TP / self.actualYes
+        self.predictedYes = self.TN + self.FN
+        self.predictedNo = self.FP + self.TP
 
-    def __computeFP_rate(self):
-        self.__FPrate = self.FP / self.actualNo
+    def __saveValues(self):
+        # Copy into confusionMatrix.csv the values of the confusion matrix obtained
+        path = './files/results/' + \
+            str(self.audio) + '_P/confusionMatrix.csv'
 
-    def __computeTN_rate(self):
-        self.__TNrate = self.TN / self.actualNo
+        with open(path, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["TN", "FP", "FN", "TP", "n"])
+            writer.writerow([self.TN, self.FP, self.FN, self.TP, self.total])
 
-    def __computePrecision(self):
-        self.__precision = self.TP / self.predictedYes
+    def getPrecision(self):
+        return self.TP / self.predictedYes
 
-    def __computePrevalence(self):
-        self.__prevalence = self.actualYes / self.__total
+    def getRecall(self):
+        return self.TP / (self.TP + self.FN)
 
-    # recall
+    def getF1Score(self):
+        return 2 * self.getPrecision() * self.getRecall() / (self.getPrecision() + self.getRecall())
+
+    def getAccuracy(self):
+        return (self.TP + self.TN) / self.total
+
+    def getMisclassificationRate(self):
+        return (self.FP + self.FN) / self.total
+
+    def getTP_rate(self):
+        return self.TP / self.actualYes
+
+    def getFP_rate(self):
+        return self.FP / self.actualNo
+
+    def getTN_rate(self):
+        return self.TN / self.actualNo
+
+    def getPrevalence(self):
+        return self.actualYes / self.total

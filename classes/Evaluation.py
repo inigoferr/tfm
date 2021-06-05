@@ -1,3 +1,4 @@
+from classes.ConfusionMatrix import ConfusionMatrix
 import numpy as np
 import csv
 
@@ -32,7 +33,7 @@ class Evaluation:
         # Generate the solution from the transcript
         solution = Solution(self.audio, self.transcript,
                             self.__totalFrames, self.__frameSize)
-        # solution.generateSolution()
+        solution.generateSolution()
 
         # Predict
         self.__predict()
@@ -40,6 +41,10 @@ class Evaluation:
         # Check Prediction
         cP = CheckPrediction(self.audio)
         cP.checkPrediction()
+
+        # Confusion Matrix
+        confusionMatrix = ConfusionMatrix(self.audio)
+        confusionMatrix.showConfusionMatrix()
 
     def __predict(self):
 
@@ -236,50 +241,3 @@ class Evaluation:
             writer = csv.writer(file)
             writer.writerow(["frameTime", "prediction"])
             writer.writerows(self.__predictions)
-
-
-"""
-                # The user is speaking, so we increase timeSpeech
-                self.__timeSpeech += self.__frameSize
-                self.__totalUniquePitchValues.append(self.__actualPitch)
-
-                # Apply Rule 1
-                r1, self.__pitchIncrease = rule1.evaluateRule(
-                    self.__actualPitch, self.__previousPitch, self.__pitchIncrease)
-
-                # Apply Rule 2
-                r2, self.__loudnessIncrease = rule2.evaluateRule(
-                    self.__actualLoudness, self.__previousLoudness, self.__loudnessIncrease)
-
-                # Apply Rule 3
-                r3 = rule3.evaluateRule()
-
-                acting = r1 or r2 or r3
-
-                if acting:
-                    if self.__previousPrediction == lBackChannel:
-                        # Remove last element
-                        self.__predictions.pop()
-
-                        # Add 2 elements; one for modifying the previous frame and other for inserting the actual frame
-                        self.__predictions.append(
-                            [np.round((frame - 1)*self.__frameSize, 3), lNoAct])
-                        self.__predictions.append(
-                            [np.round(frame*self.__frameSize, 3), lBackChannel])
-                    else:
-                        self.__predictions.append(
-                            [np.round(frame*self.__frameSize, 3), lBackChannel])
-
-                    # Update previousPrediction
-                    self.__previousPrediction = lBackChannel
-                    self.__timeNoBackChannel = 0.0
-                else:
-
-                    self.__predictions.append(
-                        [np.round(frame*self.__frameSize, 3), lNoAct])
-
-                    # Update previousPrediction
-                    self.__previousPrediction = lNoAct
-
-                    self.__timeNoBackChannel += self.__frameSize
-            """
