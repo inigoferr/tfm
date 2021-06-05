@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from classes.Rule import Rule
 from util.readFile import readCSV
-from util.codes import silenceCode, therapist, therapistCode, user, userCode
+from util.codes import silenceCode, therapist, therapistCode, participant, participantCode
 
 # Lowering of pitch in speech signal --> Back-channel
 
@@ -22,7 +22,7 @@ class Rule1(Rule):
         self.__speakers = self.transcript[:, 2]
 
         self.__speakers[self.__speakers == therapist] = therapistCode
-        self.__speakers[self.__speakers == user] = userCode
+        self.__speakers[self.__speakers == participant] = participantCode
         self.__speakers = self.__speakers.astype(np.int)
 
         # Generate XXX_ProsodyACF.csv
@@ -157,7 +157,7 @@ class Rule1(Rule):
 
                 # Only when the user is talking
                 while ((currentRowPitch < rowsPitch)
-                       and speakerPitch[currentRowPitch] == userCode
+                       and speakerPitch[currentRowPitch] == participantCode
                        and (a <= frameTime[currentRowPitch] <= b)):
 
                     actualPitch = pitch[currentRowPitch]

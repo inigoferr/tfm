@@ -2,7 +2,7 @@ import numpy as np
 import csv
 
 from util.readFile import readCSV
-from util.codes import therapist, therapistCode, user
+from util.codes import therapist, therapistCode, participant
 
 
 class Dictionary:
@@ -137,7 +137,7 @@ class Dictionary:
         matrix = np.hstack((speaker1, start_time, speaker2, answer2))
 
         for elem in matrix:
-            if (elem[0] == user and elem[2] == therapist):
+            if (elem[0] == participant and elem[2] == therapist):
                 self.__dictionary.append((elem[1], elem[3]))
 
     def __saveDictionary(self):

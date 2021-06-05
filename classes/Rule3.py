@@ -4,7 +4,7 @@ import csv
 from classes.Rule import Rule
 from util.sylco import sylco
 from util.readFile import readCSV
-from util.codes import therapist, therapistCode, user, userCode
+from util.codes import therapist, therapistCode, participant, participantCode, hesitationRepetitionWords, reservedWords
 """
 Rule 3: Disfluency in speech signal --> Question to the user
 """
@@ -22,7 +22,7 @@ class Rule3(Rule):
 
         self.__speaker = self.transcript[:, 2]
         self.__speaker[self.__speaker == therapist] = therapistCode
-        self.__speaker[self.__speaker == user] = userCode
+        self.__speaker[self.__speaker == participant] = participantCode
         self.__speaker = self.__speaker.astype(np.int)
 
         self.__values = self.transcript[:, 3]
@@ -134,9 +134,9 @@ class Rule3(Rule):
 
         self.__rowsTranscript = self.transcript.shape[0]
 
-        hesitationRepetitionWords = ("um", "eh", "eh,", "uh")
+        #hesitationRepetitionWords = ("um", "eh", "eh,", "uh")
 
-        reservedWords = ("<cough>", "<laughter>", "<sigh>")
+        #reservedWords = ("<cough>", "<laughter>", "<sigh>")
 
         pathDictionary = './files/results/' + \
             str(self.audio) + '_P/rule3/dictionaryAnswers.csv'
@@ -151,7 +151,7 @@ class Rule3(Rule):
                 # Repetitions and hesitations
                 # Speech is cut-off
                 # Unrecognizable words
-                if (self.__speaker[pos] == userCode):
+                if (self.__speaker[pos] == participantCode):
                     self.__y = pos
 
                     if (self.__areHesitationWords()

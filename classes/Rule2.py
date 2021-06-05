@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from classes.Rule import Rule
 from util.readFile import readCSV
-from util.codes import silenceCode, therapist, therapistCode, user, userCode
+from util.codes import silenceCode, therapist, therapistCode, participant, participantCode
 
 # Raised loudness in speech signal --> Back-channel
 
@@ -22,7 +22,7 @@ class Rule2(Rule):
         self.__speakers = self.transcript[:, 2]
 
         self.__speakers[self.__speakers == therapist] = therapistCode
-        self.__speakers[self.__speakers == user] = userCode
+        self.__speakers[self.__speakers == participant] = participantCode
         self.__speakers = self.__speakers.astype(np.int)
         # Generate XXX_PROSODY.csv
         self.__generatePROSODY()
@@ -160,7 +160,7 @@ class Rule2(Rule):
 
                 # Only when the user is talking
                 while ((currentRowLoudness < rowsLoudness)
-                       and speakerLoudness[currentRowLoudness] == userCode
+                       and speakerLoudness[currentRowLoudness] == participantCode
                        and (a <= frameTime[currentRowLoudness] <= b)):
 
                     actualLoudness = loudness[currentRowLoudness]
@@ -206,7 +206,7 @@ class Rule2(Rule):
         for pos in np.arange(rowsFile):
             if (speaker[pos] == therapistCode):
                 ellie[pos] = loudness[pos]
-            elif (speaker[pos] == userCode):
+            elif (speaker[pos] == participantCode):
                 participant[pos] = loudness[pos]
 
         plt.plot(x, ellie, label='Ellie')

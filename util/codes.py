@@ -6,11 +6,25 @@ silenceCode = 0
 therapist = 'Ellie'
 therapistCode = 1  # Before 0
 
-user = 'Participant'
-userCode = 2  # Before 1
+participant = 'Participant'
+participantCode = 2  # Before 1
 
 # Variables XXX_TRANSCRIPT.csv
 start_time = 0
 stop_time = 1
 speaker = 2
 value = 3
+
+# Rule 3
+hesitationRepetitionWords = ("um", "eh", "eh,", "uh")
+
+reservedWords = ("<cough>", "<laughter>", "<sigh>")
+
+# Evaluation Labels
+lNoAct = 0
+lBackChannel = 1
+lQuestion = 2
+lParticipant = 3
+lSilence = 4
+lSpeaking = 5
+lFirstRowsTherapist = 6

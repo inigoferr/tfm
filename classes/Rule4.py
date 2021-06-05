@@ -3,7 +3,7 @@ import csv
 
 from classes.Rule import Rule
 from util.readFile import readCSV
-from util.codes import silenceCode, therapist, therapistCode, user, userCode
+from util.codes import silenceCode, therapist, therapistCode, participant, participantCode
 
 # A region of pitch less than the 26th-percentile pitch level and continuing for at least 110 milliseconds --> Back-channel
 
@@ -38,7 +38,8 @@ class Rule4(Rule):
     def __computePercentilePitchLevel(self):
 
         # Get the values of speaker = userCode
-        values = self.__newfile[np.where(self.__newfile[:, 2] == userCode)]
+        values = self.__newfile[np.where(
+            self.__newfile[:, 2] == participantCode)]
 
         totalUniqueValues = np.unique(values)
         totalUniqueValuesSorted = np.sort(totalUniqueValues)
@@ -69,7 +70,8 @@ class Rule4(Rule):
         self.__speakerTranscript = self.transcript[:, 2]
         self.__speakerTranscript[self.__speakerTranscript ==
                                  therapist] = therapistCode
-        self.__speakerTranscript[self.__speakerTranscript == user] = userCode
+        self.__speakerTranscript[self.__speakerTranscript ==
+                                 participant] = participantCode
         self.__speakerTranscript = self.__speakerTranscript.astype(np.int)
 
         values = self.transcript[:, 3]
@@ -103,7 +105,7 @@ class Rule4(Rule):
 
                 # Only when the user is talking
                 while ((self.__currentRowPitch < rowsPitch)
-                       and self.__speaker[self.__currentRowPitch] == userCode
+                       and self.__speaker[self.__currentRowPitch] == participantCode
                        and (self.__a <= self.__frameTime[self.__currentRowPitch] <= self.__b)):
 
                     self.__sentence = values[pos + 1]

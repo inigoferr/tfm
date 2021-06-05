@@ -2,7 +2,7 @@ import numpy as np
 import csv
 
 from classes.Rule import Rule
-from util.codes import therapist, therapistCode, user, userCode
+from util.codes import therapist, therapistCode, participant, participantCode
 
 # After at least 700 milliseconds of speech --> Back-channel
 
@@ -25,7 +25,7 @@ class Rule5(Rule):
 
         self.__speakers = self.transcript[:, 2]
         self.__speakers[self.__speakers == therapist] = therapistCode
-        self.__speakers[self.__speakers == user] = userCode
+        self.__speakers[self.__speakers == participant] = participantCode
         self.__speakers = self.__speakers.astype(np.int)
 
         self.__values = self.transcript[:, 3]
@@ -39,7 +39,7 @@ class Rule5(Rule):
             self.__actualSpeaker = self.__speakers[pos]
             self.__answer = elem.strip()
 
-            if (self.__actualSpeaker == userCode):
+            if (self.__actualSpeaker == participantCode):
                 self.__totalTime += (self.__stop_time[pos] -
                                      self.__start_time[pos])
 
