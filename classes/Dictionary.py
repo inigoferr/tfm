@@ -147,10 +147,12 @@ class Dictionary:
             str(self.audio) + '_Dictionary.csv'
 
         uniqueAnswers = np.unique(np.array(self.__dictionary), axis=0)
+        answers = uniqueAnswers[np.argsort(
+            uniqueAnswers[:, 0].astype(np.float))]
 
         with open(path, 'w', newline='') as file:
             writer = csv.writer(file)
 
             writer.writerow(["start_time", "answer"])
 
-            writer.writerows(uniqueAnswers)
+            writer.writerows(answers)

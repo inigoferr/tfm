@@ -40,6 +40,7 @@ def startAnalysis():
             print("Audio = " + str(audio))
 
             transcript = getTRANSCRIPT(audio, '\t')  # \t = 'tab delimiter'
+
             """
             # Analyse Rule 1
             r1 = Rule1(audio, transcript)
@@ -68,9 +69,13 @@ def startAnalysis():
             # Analyse Rule 3
             r3 = Rule3(audio, transcript)
             r3.analyseRule()
-
+"""
             dictionary = Dictionary(audio)
             dictionary.generateDictionary()
+
+
 """
             evaluation = Evaluation(audio, transcript)
             evaluation.evaluate()
+
+"""
