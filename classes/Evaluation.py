@@ -5,8 +5,8 @@ from classes.evaluateRules.EvalRule4567 import EvalRule4567
 from classes.evaluateRules.EvalRule3 import EvalRule3
 from classes.evaluateRules.EvalRule2 import EvalRule2
 from classes.evaluateRules.EvalRule1 import EvalRule1
-from classes.evaluateRules.CheckPrediction import CheckPrediction
-from classes.evaluateRules.Solution import Solution
+from classes.CheckPrediction import CheckPrediction
+from classes.Solution import Solution
 from util.readFile import readCSV
 from util.codes import lNoAct, lBackChannel, lQuestion, participantCode, silenceCode
 

@@ -3,13 +3,13 @@ from classes.Evaluation import Evaluation
 from classes.Dictionary import Dictionary
 import numpy as np
 
-from classes.Rule7 import Rule7
-from classes.Rule4 import Rule4
-from classes.Rule3 import Rule3
-from classes.Rule2 import Rule2
-from classes.Rule1 import Rule1
-from classes.Rule5 import Rule5
-from classes.Rule6 import Rule6
+from classes.rules.Rule7 import Rule7
+from classes.rules.Rule4 import Rule4
+from classes.rules.Rule3 import Rule3
+from classes.rules.Rule2 import Rule2
+from classes.rules.Rule1 import Rule1
+from classes.rules.Rule5 import Rule5
+from classes.rules.Rule6 import Rule6
 from util.getFile import getTRANSCRIPT
 
 """
