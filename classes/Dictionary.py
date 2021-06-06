@@ -2,7 +2,7 @@ import numpy as np
 import csv
 
 from util.readFile import readCSV
-from util.codes import therapist, therapistCode, participant
+from util.codes import therapist, therapistCode, participant, wordsQuestions
 
 
 class Dictionary:
@@ -156,3 +156,35 @@ class Dictionary:
             writer.writerow(["start_time", "answer"])
 
             writer.writerows(answers)
+
+    def generateFinalDictionary(self, startCorpus, endCorpus):
+
+        path = './files/results/Dictionary.csv'
+
+        with open(path, 'w', newline='') as file:
+            writer = csv.writer(file)
+
+            writer.writerow(["answer"])
+
+            results = []
+            for i in np.arange(startCorpus, endCorpus + 1):
+
+                if (i != 316):
+                    p = './files/results/' + \
+                        str(i) + '_P/' + \
+                        str(i) + '_Dictionary.csv'
+
+                    f = readCSV(p, ",")
+
+                    [results.append(a.strip()) for a in f[:, 1]]
+
+            # Delete repeated values
+            f1 = np.unique(np.array(results))
+
+            # Filter final (No Questions)
+            final = []
+            for pos in np.arange(f1.shape[0]):
+                if not f1[pos].startswith(wordsQuestions):
+                    final.append(f1[pos])
+
+            writer.writerows(np.array(final).reshape(-1, 1))

@@ -69,13 +69,13 @@ def startAnalysis():
             # Analyse Rule 3
             r3 = Rule3(audio, transcript)
             r3.analyseRule()
-"""
+
             dictionary = Dictionary(audio)
             dictionary.generateDictionary()
 
-
-"""
             evaluation = Evaluation(audio, transcript)
             evaluation.evaluate()
-
-"""
+            """
+    # Generate Final Dictionary
+    dictionary = Dictionary(conversations[0])
+    dictionary.generateFinalDictionary(startCorpus, endCorpus)

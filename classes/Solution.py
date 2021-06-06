@@ -1,7 +1,7 @@
 import numpy as np
 import csv
 
-from util.codes import therapist, participant, lFirstRowsTherapist, lBackChannel, lQuestion, lParticipant, lSilence, lSpeaking
+from util.codes import therapist, participant, lFirstRowsTherapist, lBackChannel, lQuestion, lParticipant, lSilence, lSpeaking, wordsQuestions
 
 
 class Solution:
@@ -19,10 +19,6 @@ class Solution:
         speaker = np.array([item.strip()
                             for item in self.transcript[:, 2]])
         value = self.transcript[:, 3]
-
-        # Words for detecting questions
-        words = ("what", "why", "how", "who", "when",
-                 "where", "what's", "do", "did", "can", "could", "have", "had", "are", "is")
 
         result = []
 
@@ -47,7 +43,7 @@ class Solution:
 
         # Rest of rows
         for pos in np.arange(t, sTherapist.shape[0]):
-            if (vTherapist[pos].strip().startswith(words)):
+            if (vTherapist[pos].strip().startswith(wordsQuestions)):
                 result.append([sTherapist[pos], lQuestion])
             else:
                 result.append([sTherapist[pos], lBackChannel])
@@ -92,52 +88,3 @@ class Solution:
             writer = csv.writer(file)
             writer.writerow(["frameTime", "label"])
             writer.writerows(solution)
-
-        """
-
-        
-        # Transform DataTypes
-        start_time = self.transcript[:, 0].reshape(-1, 1)
-        stop_time = self.transcript[:, 1].reshape(-1, 1)
-
-        speaker = np.array([item.strip()
-                            for item in self.transcript[:, 2]]).reshape(-1, 1)
-        value = self.transcript[:, 3].reshape(-1, 1)
-
-        self.__newTranscript = np.hstack(
-            (start_time, stop_time, speaker, value))
-
-        # Words for detecting questions
-        words = ("what", "why", "how", "who", "when",
-                 "where", "what's", "do", "did", "can", "could", "have", "had", "are", "is")
-
-        # Detect first rows where therapist presents itself
-        t = 0
-        for pos, elem in enumerate(self.__newTranscript[:, 2]):
-            if (elem == user):
-                t = pos
-                break
-
-        # Therapist rows
-        rTherapist = self.__newTranscript[self.__newTranscript[:, 2] == therapist]
-
-        # Asign to 'nothing' the first 't' rows
-        rTherapist[0:t, 3] = nothing
-
-        for x in np.arange(t, rTherapist.shape[0]):
-            if (rTherapist[x, 3].strip().startswith(words)):
-                rTherapist[x, 3] = question
-            else:
-                rTherapist[x, 3] = backChannel
-
-        # User rows
-        rUser = self.__newTranscript[self.__newTranscript[:, 2] == user]
-        rUser[:, 3] = userAct
-
-        # Join
-        r1 = np.vstack((rUser, rTherapist))
-        x = r1[:, 0].reshape(-1, 1).astype(np.float)
-        y = r1[:, 1].reshape(-1, 1).astype(np.float)
-        z = r1[:, 3].reshape(-1, 1).astype(np.int)
-        r2 = np.array(np.hstack((x, y, z)))
-"""
