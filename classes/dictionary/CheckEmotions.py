@@ -52,16 +52,8 @@ class CheckEmotions:
                     self.__getNextIntervention(
                         emotion[0], negativeEmotionCode, idx)
 
-        path = './files/results/' + \
-            str(self.audio) + '_P/checkEmotions.csv'
-
-        finalResults = np.array(self.__results)
-
-        with open(path, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(
-                ["emotion", "type", "participantReaction"])
-            writer.writerows(finalResults)
+        # Save results into checkEmotions.csv
+        self.__saveCheckEmotions()
 
     def __getNextIntervention(self, emotion, type, idx):
 
@@ -69,3 +61,13 @@ class CheckEmotions:
 
             if self.__speaker[pos] == participant:
                 self.__results.append([emotion, type, self.__values[pos]])
+
+    def __saveCheckEmotions(self):
+        path = './files/results/' + \
+            str(self.audio) + '_P/checkEmotions.csv'
+
+        with open(path, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                ["emotion", "type", "participantReaction"])
+            writer.writerows(np.array(self.__results))
