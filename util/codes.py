@@ -31,4 +31,8 @@ lFirstRowsTherapist = 6
 
 # Words for detecting questions
 wordsQuestions = ("what", "why", "how", "who", "when", "where", "what's",
-         "do", "did", "can", "could", "have", "had", "are", "is")
+                  "do", "did", "can", "could", "have", "had", "are", "is")
+
+# Check emotions
+negativeEmotionCode = 0
+positiveEmotionCode = 1

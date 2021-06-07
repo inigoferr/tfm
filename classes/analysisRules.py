@@ -1,4 +1,5 @@
 
+from classes.dictionary.CheckEmotions import CheckEmotions
 from classes.Evaluation import Evaluation
 from classes.Dictionary import Dictionary
 import numpy as np
@@ -41,6 +42,10 @@ def startAnalysis():
 
             transcript = getTRANSCRIPT(audio, '\t')  # \t = 'tab delimiter'
 
+            # Check Emotions
+            cE = CheckEmotions(audio, transcript)
+            cE.checkPositiveEmotions()
+
             """
             # Analyse Rule 1
             r1 = Rule1(audio, transcript)
@@ -77,5 +82,5 @@ def startAnalysis():
             evaluation.evaluate()
             """
     # Generate Final Dictionary
-    dictionary = Dictionary(conversations[0])
-    dictionary.generateFinalDictionary(startCorpus, endCorpus)
+    #dictionary = Dictionary(conversations[0])
+    # .generateFinalDictionary(startCorpus, endCorpus)
