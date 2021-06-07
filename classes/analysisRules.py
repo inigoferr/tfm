@@ -33,7 +33,7 @@ endCorpus = 332
 def startAnalysis():
 
     # Analyse the TRANSCRIPT
-    #conversations = [300]
+    # conversations = [300]
     conversations = np.arange(startCorpus, endCorpus + 1)
 
     for audio in conversations:
@@ -43,10 +43,9 @@ def startAnalysis():
             transcript = getTRANSCRIPT(audio, '\t')  # \t = 'tab delimiter'
 
             # Check Emotions
-            cE = CheckEmotions(audio, transcript)
-            cE.checkPositiveEmotions()
+            # cE = CheckEmotions(audio, transcript)
+            # cE.checkPositiveEmotions()
 
-            """
             # Analyse Rule 1
             r1 = Rule1(audio, transcript)
             r1.analyseRule()
@@ -78,9 +77,9 @@ def startAnalysis():
             dictionary = Dictionary(audio)
             dictionary.generateDictionary()
 
-            evaluation = Evaluation(audio, transcript)
-            evaluation.evaluate()
-            """
+            #evaluation = Evaluation(audio, transcript)
+            # evaluation.evaluate()
+
     # Generate Final Dictionary
-    #dictionary = Dictionary(conversations[0])
-    # .generateFinalDictionary(startCorpus, endCorpus)
+    dictionary = Dictionary(conversations[0])
+    dictionary.generateFinalDictionary(startCorpus, endCorpus)

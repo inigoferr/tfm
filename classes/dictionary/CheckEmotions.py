@@ -61,6 +61,7 @@ class CheckEmotions:
 
             if self.__speaker[pos] == participant:
                 self.__results.append([emotion, type, self.__values[pos]])
+                break
 
     def __saveCheckEmotions(self):
         path = './files/results/' + \

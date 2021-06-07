@@ -111,11 +111,6 @@ class Rule4(Rule):
                     self.__sentence = values[pos + 1]
                     # Get nextSpeaker
                     self.__nextSpeaker = self.__speakerTranscript[pos + 1]
-                    #self.__nextSpeaker = self.__speakerTranscript[pos + 1]
-                    # if (self.__nextSpeaker == therapist):
-                    #    self.__nextSpeaker = therapistCode
-                    # else:
-                    #    self.__nextSpeaker = userCode
 
                     # Get the next 'a' time
                     self.__nextA = start_time[pos + 1]

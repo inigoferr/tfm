@@ -15,6 +15,9 @@ class Rule5(Rule):
         # List with all the answers of the Pyschologist
         self.__answers = []
 
+        # Rows
+        self.__rowsTranscript = self.transcript.shape[0]
+
     def analyseRule(self):
 
         self.__start_time = self.transcript[:, 0]
@@ -46,12 +49,12 @@ class Rule5(Rule):
                 # Greater than 700ms
                 if (self.__totalTime >= 0.700):
                     self.__sT = self.__start_time[pos]
-                    self.__saveAnswer()
+                    self.__saveAnswer(pos)
 
             else:  # Therapist
                 # Save Row if totalTime greater than 0.700
                 if (self.__previousSpeaker == therapistCode and self.__totalTime >= 0.700):
-                    self.__saveAnswer()
+                    self.__saveAnswer(pos)
 
                 self.__totalTime = 0.0
 
@@ -73,6 +76,11 @@ class Rule5(Rule):
 
         print('Rule 5 finished...')
 
-    def __saveAnswer(self):
-        self.__answers.append(
-            [self.__totalTime, self.__actualSpeaker, self.__sT, self.__answer])
+    def __saveAnswer(self, idx):
+
+        for pos in np.arange(idx, self.__rowsTranscript):
+
+            if self.__speakers[pos] == therapistCode:
+                self.__answers.append(
+                    [self.__totalTime, therapistCode, self.__sT, self.__values[pos]])
+                break
