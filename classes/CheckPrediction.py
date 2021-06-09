@@ -42,6 +42,9 @@ class CheckPrediction:
         # Get Total Backchannel
         self.total = labelSolution[labelSolution == lBackChannel].shape[0]
 
+        # List of Bakchannel checked
+        cBackchannel = []
+
         # Start Checking Prediction
 
         # Get True Positives (TP), False Positives (FP) and True Negatives (TN)
@@ -56,8 +59,12 @@ class CheckPrediction:
 
                 interval = labelSolution[a & b]
 
+                startTime = fTSolution[a & b & (labelSolution == lBackChannel)]
+
                 if any([i == lBackChannel for i in interval]):
-                    self.TP += 1
+                    if not startTime[0] in cBackchannel:
+                        cBackchannel.append(startTime[0])
+                        self.TP += 1
                 else:
                     self.FP += 1
 
