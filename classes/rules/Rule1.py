@@ -57,8 +57,8 @@ class Rule1(Rule):
         frameTime = prosodyPitch[:, 1]
         frameTime = frameTime.astype(np.float)
 
-        loudness = prosodyPitch[:, 4]
-        loudness = loudness.astype(np.float)
+        pitch = prosodyPitch[:, 3]
+        pitch = pitch.astype(np.float)
 
         path = './files/results/' + \
             str(self.audio) + '_P/rule1/' + str(self.audio) + '_pitch.csv'
@@ -80,7 +80,7 @@ class Rule1(Rule):
                     break
 
                 writer.writerow([frameTime[currentRowProsody],
-                                 loudness[currentRowProsody], currentSpeaker])
+                                 pitch[currentRowProsody], currentSpeaker])
 
             oldB = 0.0
             for pos in np.arange(rowsTranscript):
@@ -93,12 +93,12 @@ class Rule1(Rule):
                     currentSpeaker = silenceCode
 
                     writer.writerow([frameTime[currentRowProsody],
-                                     loudness[currentRowProsody], currentSpeaker])
+                                     pitch[currentRowProsody], currentSpeaker])
                     currentRowProsody += 1
 
                     while(oldB < frameTime[currentRowProsody] < a):
                         writer.writerow(
-                            [frameTime[currentRowProsody], loudness[currentRowProsody], currentSpeaker])
+                            [frameTime[currentRowProsody], pitch[currentRowProsody], currentSpeaker])
                         currentRowProsody += 1
 
                 currentSpeaker = self.__speakers[pos]
@@ -106,7 +106,7 @@ class Rule1(Rule):
                 while (a <= frameTime[currentRowProsody] <= b):
 
                     writer.writerow([frameTime[currentRowProsody],
-                                     loudness[currentRowProsody], currentSpeaker])
+                                     pitch[currentRowProsody], currentSpeaker])
                     currentRowProsody += 1
 
                 oldB = b
