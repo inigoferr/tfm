@@ -40,8 +40,8 @@ def startAnalysis():
         if (audio != 316):  # There is no data for 316_P
             print("Audio = " + str(audio))
 
-            transcript = getTRANSCRIPT(audio, '\t')  # \t = 'tab delimiter'
-            """
+            transcript = getTRANSCRIPT(audio, '\t')  # \t = 'tab delimiter'""
+
             # Analyse Rule 1
             r1 = Rule1(audio, transcript)
             r1.analyseRule()
@@ -72,6 +72,7 @@ def startAnalysis():
 
             dictionary = Dictionary(audio)
             dictionary.generateDictionary()
+
             """
             evaluation = Evaluation(audio, transcript)
             evaluation.evaluate()
@@ -79,6 +80,7 @@ def startAnalysis():
             # Check Emotions
             cE = CheckEmotions(audio, transcript)
             cE.checkPositiveEmotions()
+            """
 
     # Generate Final Dictionary
     dictionary = Dictionary(conversations[0])

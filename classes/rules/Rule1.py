@@ -155,7 +155,7 @@ class Rule1(Rule):
                 while(currentRowPitch < rowsPitch and speakerPitch[currentRowPitch] in (silenceCode, therapistCode)):
                     currentRowPitch += 1
 
-                # Only when the user is talking
+                # Only when the participant is talking
                 while ((currentRowPitch < rowsPitch)
                        and speakerPitch[currentRowPitch] == participantCode
                        and (a <= frameTime[currentRowPitch] <= b)):

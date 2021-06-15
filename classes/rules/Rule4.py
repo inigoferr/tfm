@@ -37,7 +37,7 @@ class Rule4(Rule):
 
     def __computePercentilePitchLevel(self):
 
-        # Get the values of speaker = userCode
+        # Get the values of speaker = participantCode
         values = self.__newfile[np.where(
             self.__newfile[:, 2] == participantCode)]
 
@@ -103,12 +103,15 @@ class Rule4(Rule):
                 while(self.__currentRowPitch < rowsPitch and self.__speaker[self.__currentRowPitch] in (silenceCode, therapistCode)):
                     self.__currentRowPitch += 1
 
-                # Only when the user is talking
+                # Only when the participant is talking
                 while ((self.__currentRowPitch < rowsPitch)
                        and self.__speaker[self.__currentRowPitch] == participantCode
                        and (self.__a <= self.__frameTime[self.__currentRowPitch] <= self.__b)):
 
-                    self.__sentence = values[pos + 1]
+                    # Get the next sentence of the therapist
+                    self.__sentence = self.__getTherapistAnswer(values, pos)
+                    #self.__sentence = values[pos + 1]
+
                     # Get nextSpeaker
                     self.__nextSpeaker = self.__speakerTranscript[pos + 1]
 
@@ -144,3 +147,12 @@ class Rule4(Rule):
 
         self.__oldSpeaker = self.__actualSpeaker
         self.__currentRowPitch += 1
+
+    def __getTherapistAnswer(self, values, idx):
+
+        for x in np.arange(idx, self.transcript.shape[0]):
+
+            if self.__speakerTranscript[x] == therapistCode:
+                return values[x]
+
+        return "null"
