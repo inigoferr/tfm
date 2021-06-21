@@ -1,4 +1,5 @@
 
+from classes.evaluateRules.GroupConfusionMatrix import GroupConfusionMatrix
 from classes.dictionary.CheckEmotions import CheckEmotions
 from classes.Evaluation import Evaluation
 from classes.Dictionary import Dictionary
@@ -12,6 +13,7 @@ from classes.rules.Rule1 import Rule1
 from classes.rules.Rule5 import Rule5
 from classes.rules.Rule6 import Rule6
 from util.getFile import getTRANSCRIPT
+from util.codes import startCorpus, endCorpus
 
 """
     | Feature + Value |
@@ -25,10 +27,6 @@ from util.getFile import getTRANSCRIPT
     [X] Rule 7: Not output back-channel feedback within the preceding 800 milliseconds --> Back-channel
 """
 
-# Number of Corpus
-startCorpus = 300
-endCorpus = 332
-
 
 def startAnalysis():
 
@@ -41,11 +39,11 @@ def startAnalysis():
             print("Audio = " + str(audio))
 
             transcript = getTRANSCRIPT(audio, '\t')  # \t = 'tab delimiter'""
-
+            """
             # Analyse Rule 1
             r1 = Rule1(audio, transcript)
             r1.analyseRule()
-
+            
             # Analyse Rule 2
             r2 = Rule2(audio, transcript)
             r2.analyseRule()
@@ -72,16 +70,23 @@ def startAnalysis():
 
             dictionary = Dictionary(audio)
             dictionary.generateDictionary()
-
             """
             evaluation = Evaluation(audio, transcript)
             evaluation.evaluate()
 
+            """
             # Check Emotions
+       
             cE = CheckEmotions(audio, transcript)
             cE.checkPositiveEmotions()
             """
 
+    """       
     # Generate Final Dictionary
     dictionary = Dictionary(conversations[0])
     dictionary.generateFinalDictionary(startCorpus, endCorpus)
+    """
+
+    # Generate Final Confusion Matrix file
+    grouping = GroupConfusionMatrix()
+    grouping.group()

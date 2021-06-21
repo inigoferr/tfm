@@ -94,7 +94,7 @@ class Evaluation:
             # The speaker changes
             if actualSpeaker != previousSpeaker:
                 if actualSpeaker == silenceCode:
-                    self.__pitchIncrease = 0.0
+                    self.__pitchDecrease = 0.0
                     self.__loudnessIncrease = 0.0
                 elif actualSpeaker == participantCode:
                     self.__timePercentile = 0.0
@@ -102,7 +102,7 @@ class Evaluation:
                     self.__timeSilence = 0.0
                 else:
                     self.__timePercentile = 0.0
-                    self.__pitchIncrease = 0.0
+                    self.__pitchDecrease = 0.0
                     self.__loudnessIncrease = 0.0
                     self.__timeSilence = 0.0
 
@@ -138,7 +138,7 @@ class Evaluation:
         self.__percentile = 26
 
         # Rules parameters
-        self.__pitchIncrease = 0.0
+        self.__pitchDecrease = 0.0
         self.__loudnessIncrease = 0.0
         self.__timePercentile = 0.0
         self.__timeSpeech = 0.0
@@ -151,8 +151,8 @@ class Evaluation:
         self.__totalUniquePitchValues.append(self.__actualPitch)
 
         # Apply Rule 1
-        r1, self.__pitchIncrease = self.__rule1.evaluateRule(
-            self.__actualPitch, self.__previousPitch, self.__pitchIncrease)
+        r1, self.__pitchDecrease = self.__rule1.evaluateRule(
+            self.__actualPitch, self.__previousPitch, self.__pitchDecrease)
 
         # Apply Rule 2
         r2, self.__loudnessIncrease = self.__rule2.evaluateRule(

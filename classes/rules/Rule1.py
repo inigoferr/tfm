@@ -2,6 +2,7 @@ import numpy as np
 import os
 import csv
 import matplotlib.pyplot as plt
+import pandas as pd
 
 from classes.rules.Rule import Rule
 from util.readFile import readCSV
@@ -35,7 +36,7 @@ class Rule1(Rule):
         self.__generateAnswersPyschologist()
 
         # Generate Graph
-        self.__generateGraphPitch()
+        # self.__generateGraphPitch()
 
         print("Rule 1 finished...")
 

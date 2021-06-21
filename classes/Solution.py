@@ -22,16 +22,22 @@ class Solution:
 
         result = []
 
+        # *****************************************************************
         # Start times of Transcript
         # Participant
         [result.append([s, lParticipant])
          for s in start_time[speaker == participant]]
 
+        # *****************************************************************
+        # Stop times of Transcript
+        [result.append([s, lSpeaking]) for s in stop_time]
+
+        # *****************************************************************
         # Therapist
         # Therapist lines
         maskTherapist = (speaker == therapist)
-        sTherapist = start_time[maskTherapist]
-        vTherapist = value[maskTherapist]
+        startTimeTherapist = start_time[maskTherapist]
+        valueTherapist = value[maskTherapist]
 
         # First rows of the therapist that are always an introduction
         t = 0
@@ -39,40 +45,65 @@ class Solution:
             if (sp == participant):
                 t = pos
                 break
-        [result.append([s, lFirstRowsTherapist]) for s in sTherapist[:t]]
 
-        # Rest of rows
-        for pos in np.arange(t, sTherapist.shape[0]):
-            if (vTherapist[pos].strip().startswith(wordsQuestions)):
-                result.append([sTherapist[pos], lQuestion])
+        [result.append([s, lFirstRowsTherapist])
+         for s in startTimeTherapist[:t]]
+
+        # Rest of start_time of the therapist
+        for pos in np.arange(t, startTimeTherapist.shape[0]):
+            if (valueTherapist[pos].strip().startswith(wordsQuestions)):
+                result.append([startTimeTherapist[pos], lQuestion])
             else:
-                result.append([sTherapist[pos], lBackChannel])
+                result.append([startTimeTherapist[pos], lBackChannel])
+        # *****************************************************************
 
         # FrameTimes
         stp = self.totalFrames * self.frameSize
         frameTime = np.arange(
             start=0.0, stop=stp, step=self.frameSize)
 
+        # *****************************************************************
         # Frame times before start_time[0]
         maskStartTimeZero = frameTime < start_time[0]
         [result.append([np.round(f, 3), lSilence])
          for f in frameTime[maskStartTimeZero]]
 
+        # *****************************************************************
+        # Frame time after start_time[0]
+
         rows = start_time.shape[0]
-        for pos in np.arange(rows):
+        for pos in np.arange(rows - 1):
             maskStart = start_time[pos] < frameTime
             maskStop = frameTime < stop_time[pos]
 
+            # lSpeaking
             [result.append([np.round(f, 3), lSpeaking])
              for f in frameTime[maskStart & maskStop]]
 
+            # lSilence
+            maskActualStop = stop_time[pos] < frameTime
+            maskNextStart = frameTime < start_time[pos + 1]
+
+            [result.append([np.round(f, 3), lSilence])
+             for f in frameTime[maskActualStop & maskNextStart]]
+
+        # Last row start_time[-1] and stop_time[-1]
+        maskStart = start_time[-1] < frameTime
+        maskStop = frameTime < stop_time[-1]
+        [result.append([np.round(f, 3), lSpeaking])
+            for f in frameTime[maskStart & maskStop]]
+        # *****************************************************************
+
+        # *****************************************************************
         # Frame times after stop_time[-1]
         maskLastStopTime = stop_time[-1] < frameTime
         [result.append([np.round(f, 3), lSilence])
          for f in frameTime[maskLastStopTime]]
+        # *****************************************************************
 
         # Transform to array
-        result = np.array(result)
+        result = np.unique(np.array(result), axis = 0) 
+        # Remove uniques because the transcript can have a stop time and start time error
 
         # Save Solution
         self.__saveSolution(result)

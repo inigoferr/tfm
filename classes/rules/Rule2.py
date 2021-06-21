@@ -34,7 +34,7 @@ class Rule2(Rule):
         self.__generateAnswersPyschologist()
 
         # Generate the Graph showing the loudness of Ellie (the therapist) and the participant
-        self.__generateGraphLoudness()
+        # self.__generateGraphLoudness()
 
         print("Rule 2 finished...")
 

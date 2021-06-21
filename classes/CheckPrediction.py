@@ -11,7 +11,7 @@ class CheckPrediction:
         self.audio = audio
 
         # Create range with a variable
-        self.range = 1.5
+        self.range = 2.0
 
         self.TP = 0
         self.FP = 0

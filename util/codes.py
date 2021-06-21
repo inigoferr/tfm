@@ -25,7 +25,7 @@ lNoAct = 0
 lBackChannel = 1
 lQuestion = 2
 lParticipant = 3
-lSilence = 4
+lSilence = 4 
 lSpeaking = 5
 lFirstRowsTherapist = 6
 
@@ -36,3 +36,7 @@ wordsQuestions = ("what", "why", "how", "who", "when", "where", "what's",
 # Check emotions
 negativeEmotionCode = 0
 positiveEmotionCode = 1
+
+# Number of Corpus
+startCorpus = 300
+endCorpus = 332
