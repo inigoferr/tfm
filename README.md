@@ -1,5 +1,8 @@
 # Master's Thesis: Conversational e-coach with active listening
 
+## Introduction
+Final Master Project developed by Iñigo Fernández Arrizabalaga during his Master in Software Development at the University of Granada (UGR) in the academic year 2020-2021.
+
 ## Abstract
 Development of a set of active listening strategies that allows a conversational
 system for the mental e-health domain to carry out active listening
@@ -8,6 +11,10 @@ set of strategies we will work with different human-human conversations
 from a corpus as well as a repository of active listening strategies. Based on
 these, the system will be able to choose the best interventions at the best
 moments.
+
+## Execution 
+
+Execute main.py
 
 ## File structure
 
@@ -31,6 +38,4 @@ moments.
 * myconfig/
 * util/
 
-## Execution 
 
-Execute main.py
