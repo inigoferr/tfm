@@ -1,7 +1,7 @@
 # Master's Thesis: Conversational e-coach with active listening
 
 ## Introduction
-Final Master Project developed by Iñigo Fernández Arrizabalaga during his Master in Software Development at the University of Granada (UGR) in the academic year 2020-2021.
+Master's Thesis developed by Iñigo Fernández Arrizabalaga during his Master in Software Development at the University of Granada (UGR) in the academic year 2020-2021.
 
 ## Abstract
 Development of a set of active listening strategies that allows a conversational
